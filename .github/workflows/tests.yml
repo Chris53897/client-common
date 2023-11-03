@@ -75,6 +75,8 @@ jobs:
             php-version: '7.4'
           - symfony: '6'
             php-version: '8.2'
+          - symfony: '7'
+            php-version: '8.2'
 
     steps:
       - name: Checkout code
@@ -90,6 +92,12 @@ jobs:
       - name: Pin old packages
         run: composer require "phpspec/phpspec:^2.5.8" --no-interaction --no-update
         if: "matrix.symfony == '2'"
+
+      - name: "Stability dev (temp until a stable release of symfony 7 is available)"
+        if: matrix.symfony == '7'
+        run: |
+          composer config minimum-stability "dev"
+          composer config prefer-stable false
 
       - name: Install dependencies
         run: |
