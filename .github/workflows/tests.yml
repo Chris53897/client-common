@@ -98,8 +98,13 @@ jobs:
         run: |
           composer config minimum-stability "dev"
           composer config prefer-stable false
+          composer config --no-plugins allow-plugins.symfony/flex true
+          composer require --no-update --no-interaction --no-progress symfony/flex
+          composer config extra.symfony.require ${{ matrix.symfony}}
+          composer update --prefer-dist --no-interaction --no-progress
 
       - name: Install dependencies
+        if: matrix.symfony != '7'
         run: |
           composer config --no-plugins allow-plugins.symfony/flex true
           composer require --no-update --no-interaction --no-progress symfony/flex
